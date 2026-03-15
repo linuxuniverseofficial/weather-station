@@ -1,0 +1,58 @@
+version: "3.8"
+
+# ─── Estação Meteorológica Uberaba MG ──────────────────────
+# Sobe: subscriber MQTT → SQLite + Flask web
+#
+# USO:
+#   docker compose up -d
+#   Acesso web: http://localhost:5050
+#
+# DEPENDENCIAS EXTERNAS:
+#   - Mosquitto já rodando (ajuste MQTT_BROKER abaixo se necessário)
+#   - Rede onde o broker MQTT está acessível
+# ───────────────────────────────────────────────────────────
+
+services:
+
+  # ── Subscriber: MQTT → SQLite ──────────────────────────
+  meteo-subscriber:
+    image: python:3.11-slim
+    container_name: meteo-subscriber
+    restart: unless-stopped
+    volumes:
+      - ./:/app
+      - meteo-dados:/dados
+    working_dir: /app
+    environment:
+      - PYTHONUNBUFFERED=1
+    command: >
+      sh -c "
+        pip install paho-mqtt --quiet &&
+        python subscriber.py
+      "
+    network_mode: host   # acessa o broker MQTT na rede local diretamente
+
+  # ── Web: Flask + interface ─────────────────────────────
+  meteo-web:
+    image: python:3.11-slim
+    container_name: meteo-web
+    restart: unless-stopped
+    volumes:
+      - ./:/app
+      - meteo-dados:/dados
+    working_dir: /app
+    environment:
+      - PYTHONUNBUFFERED=1
+    ports:
+      - "5050:5050"
+    command: >
+      sh -c "
+        pip install flask --quiet &&
+        python web.py
+      "
+    depends_on:
+      - meteo-subscriber
+
+volumes:
+  meteo-dados:
+    driver: local
