@@ -35,6 +35,7 @@ HTML = r"""<!DOCTYPE html>
       background: #0a0a0a;
       color: #c8d6e5;
       min-height: 100vh;
+      zoom: 1.1;
     }
 
     header {
