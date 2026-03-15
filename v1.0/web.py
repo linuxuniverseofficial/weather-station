@@ -35,7 +35,6 @@ HTML = r"""<!DOCTYPE html>
       background: #0a0a0a;
       color: #c8d6e5;
       min-height: 100vh;
-      zoom: 1.1;
     }
 
     header {
@@ -109,13 +108,9 @@ HTML = r"""<!DOCTYPE html>
     /* Graficos */
     .charts {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr;
       gap: 1rem;
       margin-bottom: 1.5rem;
-    }
-
-    @media (max-width: 768px) {
-      .charts { grid-template-columns: 1fr; }
     }
 
     .chart-box {
