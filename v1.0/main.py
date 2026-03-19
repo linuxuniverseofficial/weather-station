@@ -221,10 +221,10 @@ def prevtemp():
 # ─── DISPLAY ───────────────────────────────────────────────
 # Layout:
 # ┌──────────────────────────────┐
-# │ 28C        │   11:47         │
-# │ 52%        │                 │
-# │ 916hPa     │   Wifi: On      │
-# │ 764m       │                 │
+# │ 28 C       │   11:47         │
+# │ 52 %       │                 │
+# │ 91 6hPa    │   Wifi: On      │
+# │ 764 mts    │                 │
 # │ Tx: -1     │   MQTT: On      │
 # ├──────────────────────────────┤
 # │ Pressao Despenca             │
@@ -242,10 +242,10 @@ def display():
         disp.hline(0, 53, 128, 1)
 
         # ── Coluna esquerda ──
-        disp.text(str(tempc) + "C",   0, 2)
-        disp.text(str(hum) + "%",     0, 13)
-        disp.text(str(presA) + "hPa", 0, 24)
-        disp.text("764m",             0, 35)
+        disp.text(str(tempc) + " C",   0, 2)
+        disp.text(str(hum) + " %",     0, 13)
+        disp.text(str(presA) + " hPa", 0, 24)
+        disp.text("764 mts",             0, 35)
 
         if presd9 >= 5 and presd2 > 0:
             taxa = int(((float(presA) - float(presd2)) / 5) * 60)
