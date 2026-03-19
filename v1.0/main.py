@@ -72,8 +72,11 @@ def mqtt_publish():
         mqtt_ok = False
         return
     try:
+        import usocket
         from umqtt.simple import MQTTClient
         client = MQTTClient(MQTT_CLIENT, MQTT_BROKER, MQTT_PORT, keepalive=10)
+        client.sock = usocket.socket()
+        client.sock.settimeout(5)  # timeout de 5s no socket
         client.connect()
         payload = '{{"temp":{},"hum":{},"pres":{},"weather":"{}"}}'.format(
             tempc, hum, presA, weather
