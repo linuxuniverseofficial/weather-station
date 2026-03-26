@@ -5,7 +5,7 @@
 import machine, gc, dht, math, BME280, ssd1306, esp, time, ntptime
 esp.osdebug(None)
 from time import sleep
-from machine import Pin, I2C
+from machine import Pin, I2C, WDT
 
 # ─── CONFIGURACAO MQTT ─────────────────────────────────────
 MQTT_BROKER    = "172.20.0.45"   # <<< IP do seu servidor MQTT
@@ -15,6 +15,9 @@ MQTT_CLIENT    = b"esp8266_meteo"
 MQTT_INTERVALO = 60               # publicar a cada N ciclos (1 ciclo = 1s)
 NTP_INTERVALO  = 3600             # resync NTP a cada 1 hora
 # ───────────────────────────────────────────────────────────
+
+# timeout padrão: ~8 segundos no ESP8266
+wdt = WDT()
 
 # Leituras
 hum = 0; pres = 0; presA = 0; tempc = 0
@@ -32,7 +35,6 @@ mqtt_contador = 0
 ntp_contador  = 0
 wifi_ok  = False
 mqtt_ok  = False
-
 
 # ─── NTP ───────────────────────────────────────────────────
 
@@ -292,6 +294,7 @@ if wifi_ok:
 # ─── LOOP PRINCIPAL ────────────────────────────────────────
 
 while True:
+    wdt.feed()  # avisa o watchdog que tá vivo
     read_sensor()
     prevtemp()
     check_wifi()
